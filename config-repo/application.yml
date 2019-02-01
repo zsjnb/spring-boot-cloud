@@ -1,27 +1,45 @@
+# 注册中心配置
 eureka:
   instance:
     hostname: registry
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@registry:8761/eureka/
+      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@${eureka.instance.hostname}:8761/eureka/
 
+# 激活feign hystrix断路器支持
+feign:
+  hystrix:
+    enabled: true
+
+# 关于超时设置的理解参考https://segmentfault.com/a/1190000014370360
+# hystrixTimeout的优先级是具体服务的hytrix超时时间 > 默认的hytrix超时时间 > ribbon的超时时间
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 30000
 
+# ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1)
 ribbon:
   ReadTimeout: 5000
   ConnectTimeout: 5000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
 
+# 调用链监控采集配置
 spring:
   rabbitmq:
-    host: rabbitmq
+    addresses: rabbitmq:5672
+    username: guest
+    password: guest
+  zipkin:
+    rabbitmq:
+      queue: zipkin
   sleuth:
+    # 采样率默认0.1即10%
     sampler:
       percentage: 1
     integration:
@@ -29,6 +47,7 @@ spring:
     scheduled:
       skip-pattern: "^org.*HystrixStreamTask$"
 
+# OAuth2认证服务配置
 authserver:
     hostname: auth-service
     port: 5000
