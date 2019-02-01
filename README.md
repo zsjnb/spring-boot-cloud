@@ -2,6 +2,8 @@
 
 本项目是一个基于 Spring Boot、Spring Cloud、Spring Oauth2 和 Spring Cloud Netflix 等框架构建的微服务项目。
 
+版本：Spring Boot 1.5.19、Spring Boot Admin 1.5.7、Spring Cloud Edgware.SR5
+
 # 技术栈
 * Spring boot - 微服务的入门级微框架，用来简化 Spring 应用的初始搭建以及开发过程。
 * Eureka - 云端服务发现，一个基于 REST 的服务，用于定位服务，以实现云端中间层服务发现和故障转移。
