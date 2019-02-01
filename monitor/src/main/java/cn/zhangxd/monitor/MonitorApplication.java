@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * SpringBootAdminServer用来监控和管理SpringBoot应用并提供UI
+ * Turbine是一个聚合Hystrix监控数据的工具，它可将所有相关/hystrix.stream端点的数据聚合到一个组合的/turbine.stream中，从而让集群的监控更加方便
+ * SpringCloud在封装Turbine的时候，还实现了基于消息代理的采集实现TurbineStream。可以将所有需要采集的监控信息都输出到消息代理中，然后Turbine服务再从消息代理中异步的获取这些监控信息
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAdminServer
@@ -19,6 +24,9 @@ public class MonitorApplication {
         SpringApplication.run(MonitorApplication.class, args);
     }
 
+    /**
+     * AdminServer UI 安全配置
+     */
     @Configuration
     public static class SecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
