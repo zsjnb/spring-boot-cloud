@@ -10,17 +10,37 @@ eureka:
       user.password: ${security.user.password}
   client:
     service-url:
-      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@registry:8761/eureka/
+      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@${eureka.instance.hostname}:8761/eureka/
 
 spring:
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/zhangxd1989/spring-boot-cloud
-          search-paths: config-repo
+#        git:
+#          # 配置文件只搜索该目录下的searchPaths
+#          uri: https://github.com/zhangxd1989/spring-boot-cloud
+#          # 从远端库获取配置文件，存储到本地目录。默认存储在系统临时目录下，有可能会被误删，保险起见，最好修改该存储目录
+#          basedir: /temp
+#          # 指定搜索路径，如果有多个路径则使用,分隔
+#          search-paths: config-repo
+#          # 强制从远端库更新本地库，防止出现本地库被篡改而无法更新的问题
+#          force-pull: true
+#        svn:
+#          uri: svn://.../spring-boot-cloud/config-repo
+#          basedir: /temp/config-repo
+#          username: user
+#          password: password
+#        default-label: /
+        native:
+          # 本地模式从classpath:/目录或本地文件系统file:/中加载配置文件
+          searchLocations: file:/C:\...\spring-boot-cloud\config-repo
+  profiles:
+    # 启用svn配置支持要指定值为subversion，启用从本地模式要指定值为native
+    active: native
   rabbitmq:
-    host: rabbitmq
+    addresses: rabbitmq:5672
+    username: guest
+    password: guest
 
 security:
   user:
