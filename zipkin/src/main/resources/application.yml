@@ -1,11 +1,18 @@
 spring:
   application:
     name: zipkin
-  rabbitmq:
-    host: rabbitmq
 
 server:
   port: 9411
+
+# SpringCloud Edgware版本开始MQ配置方式
+zipkin:
+  collector:
+    rabbitmq:
+      addresses: rabbitmq:5672
+      username: guest
+      password: guest
+      queue: zipkin
 
 security:
   user:
