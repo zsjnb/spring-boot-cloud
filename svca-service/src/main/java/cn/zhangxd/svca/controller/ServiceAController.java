@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+/**
+ * 使用@RefreshScope注解的类，会在接到SpringCloud配置中心配置刷新的时候，自动将新的配置更新到该类对应的字段中
+ */
 @RefreshScope
 @RestController
 public class ServiceAController {
