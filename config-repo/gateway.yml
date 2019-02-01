@@ -5,17 +5,22 @@ management:
   security:
     enabled: false
 
+# 关于超时设置的理解参考https://segmentfault.com/a/1190000014370360
+# hystrixTimeout的优先级是具体服务的hytrix超时时间 > 默认的hytrix超时时间 > ribbon的超时时间
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 20000
+            timeoutInMilliseconds: 50000
 
+# ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1)
 ribbon:
   ReadTimeout: 10000
   ConnectTimeout: 10000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
 
 zuul:
   ignoredServices: '*'
