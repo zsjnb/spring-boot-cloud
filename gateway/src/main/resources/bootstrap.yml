@@ -2,13 +2,20 @@ spring:
   application:
     name: gateway
   cloud:
+    # 配置中心的相关配置要配置在bootstrap.yml中，不要配置appliaction.yml，因为服务启动时会先从bootstrap中读取配置，然后从远端配置中心读取配置文件，最后再从appliaction中获取配置
     config:
       uri: http://config:8888
-      fail-fast: true
       username: user
       password: ${CONFIG_SERVER_PASSWORD:password}
+      # 失败快速响应，防止连接时间过长影响项目启动速度
+      fail-fast: true
+      # 失败重试，默认是重试6次，最初是延迟1s再次重试，如果再失败，则延迟1.1*1s、1.1*1.1*1s、…
       retry:
+        # 首次重试间隔时间，默认1000毫秒
         initial-interval: 2000
+        # 最大重试间隔时间，默认2000毫秒
         max-interval: 10000
+        # 下一次重试间隔时间的乘数，比如开始1000毫秒，下一次就是1000*1.1=1100毫秒
         multiplier: 2
+        # 最大重试次数
         max-attempts: 10
